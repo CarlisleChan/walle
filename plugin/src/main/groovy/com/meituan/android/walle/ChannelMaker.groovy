@@ -73,15 +73,15 @@ class ChannelMaker extends DefaultTask {
             File channelOutputFolder = apkFile.parentFile;
             if (extension.apkOutputFolder instanceof File) {
                 channelOutputFolder = extension.apkOutputFolder;
-                if (!channelOutputFolder.parentFile.exists()) {
-                    channelOutputFolder.parentFile.mkdirs();
+                if (!channelOutputFolder.exists()) {
+                    channelOutputFolder.mkdirs();
                 }
             }
 
             if (apiIdentifier != null && apiIdentifier.length() > 0) {
                 channelOutputFolder = new File(channelOutputFolder, apiIdentifier);
-                if (!channelOutputFolder.parentFile.exists()) {
-                    channelOutputFolder.parentFile.mkdirs();
+                if (!channelOutputFolder.exists()) {
+                    channelOutputFolder.mkdirs();
                 }
             }
             def nameVariantMap = [
@@ -144,7 +144,7 @@ class ChannelMaker extends DefaultTask {
                 def configFile = null
                 if (extension.configPath.startsWith("http")) {
                     def text = extension.configPath.toURL().text
-                    configFile = new File(extension.apkOutputFolder.path + '/config')
+                    configFile = new File("config", extension.apkOutputFolder)
                     configFile.write(text)
                 } else {
                     configFile = new File(extension.configPath)
@@ -161,7 +161,7 @@ class ChannelMaker extends DefaultTask {
                 def channelFile = null
                 if (extension.channelPath.startsWith("http")) {
                     def text = extension.channelPath.toURL().text
-                    channelFile = new File(extension.apkOutputFolder.path + '/channel')
+                    channelFile = new File("channel", extension.apkOutputFolder)
                     channelFile.write(text)
                 } else {
                     channelFile = new File(extension.channelPath)
