@@ -34,12 +34,11 @@ class Extension {
     /**
      * only channel
      */
-    File channelFile;
-
+    String channelPath
     /**
      * channel & extraInfo config
      */
-    File configFile;
+    String configPath
 
     Extension(Project project) {
         apkOutputFolder = null;

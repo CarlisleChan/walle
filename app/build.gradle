@@ -6,7 +6,7 @@ apply from: rootProject.file('quality.gradle')
 
 buildscript {
     repositories {
-        mavenLocal()
+        maven { url "http://127.0.0.1:8081/repository/maven-releases/" }
         jcenter()
     }
     dependencies {
@@ -40,10 +40,10 @@ android {
 
     signingConfigs {
         sign {
-            storeFile file("keystore/sign-debug.keystore")
-            storePassword "1234567"
-            keyAlias "debug"
-            keyPassword "12345678"
+            storeFile file("keystore/seed.jks")
+            storePassword "123456"
+            keyAlias "test"
+            keyPassword "123456"
         }
     }
 
@@ -93,18 +93,17 @@ walle {
     apkOutputFolder = new File("${project.buildDir}/outputs/channels")
     apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}-${flavorName}.apk'
     //configFile与channelFile两者必须存在一个，否则无法生成渠道包。两者都存在时优先执行configFile
-    channelFile = new File("${project.getProjectDir()}/channel")
-    //configFile = new File("${project.getProjectDir()}/config.json")
+    configPath = "${project.getProjectDir()}/config.json"
+//    channelPath = "${project.getProjectDir()}/channel"
+//    configPath = "https://raw.githubusercontent.com/CarlisleChan/SeedFramework/master/channel_config.json"
 }
-
 
 // 根据不同的applicationId来配置不同的channelFile／configFile
 afterEvaluate {
     project.android.applicationVariants.all { BaseVariant variant ->
         variant.assemble.doFirst {
             if (variant.applicationId.endsWith(".debug")) {
-
-                project.walle.channelFile = new File("${project.getProjectDir()}/channel_debug")
+                project.walle.channelPath = "${project.getProjectDir()}/channel_debug"
             }
         }
     }

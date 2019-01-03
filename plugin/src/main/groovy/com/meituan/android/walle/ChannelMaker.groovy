@@ -140,23 +140,39 @@ class ChannelMaker extends DefaultTask {
 
                 generateChannelApkByChannelFile(channelFile, apkFile, channelOutputFolder, nameVariantMap)
 
-            } else if (extension.configFile instanceof File) {
+            } else if (extension.configPath != null && extension.configPath.length() > 0) {
+                def configFile = null
+                if (extension.configPath.startsWith("http")) {
+                    def text = extension.configPath.toURL().text
+                    configFile = new File(extension.apkOutputFolder.path + '/config')
+                    configFile.write(text)
+                } else {
+                    configFile = new File(extension.configPath)
+                }
 
-                if (!extension.configFile.exists()) {
+                if (!configFile.exists()) {
                     project.logger.warn("config file does not exist")
                     return
                 }
 
-                generateChannelApkByConfigFile(extension.configFile, apkFile, channelOutputFolder, nameVariantMap)
+                generateChannelApkByConfigFile(configFile, apkFile, channelOutputFolder, nameVariantMap)
 
-            } else if (extension.channelFile instanceof File) {
+            } else if (extension.channelPath != null && extension.channelPath.length() > 0) {
+                def channelFile = null
+                if (extension.channelPath.startsWith("http")) {
+                    def text = extension.channelPath.toURL().text
+                    channelFile = new File(extension.apkOutputFolder.path + '/channel')
+                    channelFile.write(text)
+                } else {
+                    channelFile = new File(extension.channelPath)
+                }
 
-                if (!extension.channelFile.exists()) {
+                if (!channelFile.exists()) {
                     project.logger.warn("channel file does not exist")
                     return
                 }
 
-                generateChannelApkByChannelFile(extension.channelFile, apkFile, channelOutputFolder, nameVariantMap)
+                generateChannelApkByChannelFile(channelFile, apkFile, channelOutputFolder, nameVariantMap)
             }
         }
 
